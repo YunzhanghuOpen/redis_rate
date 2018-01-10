@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
+	"github.com/YunzhanghuOpen/glog"
 	"golang.org/x/time/rate"
 )
 
@@ -78,6 +79,8 @@ func (l *Limiter) AllowN(
 	count, err := l.incr(name, dur, n)
 	if err == nil {
 		allow = count <= maxn
+	} else {
+		glog.Errorf("name=%s err=%s", name, err)
 	}
 
 	return count, delay, allow
